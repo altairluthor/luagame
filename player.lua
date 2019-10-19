@@ -68,14 +68,23 @@ function module.Player:new(player, name, profession)
 			player[k] = v
 		end
 	end
-	self.maxHealth = self.health
+	player.maxHealth = player.health
 	return player
 end
 
-function module.Player:handleBeAttack(atk)
+function module.Player:beAttack(atk)
 	local damage = Formula.calDamage(atk, self.defence)
 	print(self.name..'受到了'..damage..'点伤害，乂(ﾟДﾟ三ﾟДﾟ)乂 ')
 	self.health = self.health - damage
+	if self.health < 0 then
+		self.death()
+		return true
+	end
+	return false
+end
+
+function module.Player:death()
+	print('你死了, o(´^｀)o')
 end
 
 function module.Player:useSkill()
