@@ -1,18 +1,10 @@
+-- 引入包
 local Formula = require('formula')
 
+-- 定义包
 local module = {}
 
-module.Player = {
-	name = '',
-	profession = '',
-	level = 1,
-	experience = 0,
-	skill = nil,
-	health = 100,
-	attack = 5,
-	defence = 0
-}
-
+-- 职业表
 module.Profession = {
 	caster = {
 		defaultValue = {
@@ -56,6 +48,18 @@ module.Profession = {
 	}
 }
 
+-- 角色类
+module.Player = {
+	name = '',
+	profession = '',
+	level = 1,
+	experience = 0,
+	skill = nil,
+	health = 100,
+	attack = 5,
+	defence = 0
+}
+
 function module.Player:new(player, name, profession)
 	player = setmetatable(player or {}, self)
 	self.__index = self
@@ -91,13 +95,24 @@ function module.Player:useSkill()
 	return self.skill
 end
 
+function module.Player:getExperience(exp)
+	print('--获得经验'..exp..'--')
+	self.experience = self.experience + exp
+	local experienceToLevelup = Formula.experienceToLevelup(self.level - 1, self.experience)
+	if experienceToLevelup < 0 then
+		self:levelUp()
+	else
+		print('--升级还剩经验'..experienceToLevelup..'--')
+	end
+end
+
 function module.Player:levelUp()
 	self.level = self.level + 1
 	self.attack = self.attack * 1.05
 	self.defence = self.defence * 1.05
 	self.experience = 0
 	self.health = self.maxHealth
-	print(self.name..'等级提升，(σﾟ∀ﾟ)σ')
+	print('--'..self.name..'等级提升，(σﾟ∀ﾟ)σ--')
 	return self.skill
 end
 

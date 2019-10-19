@@ -1,5 +1,7 @@
+-- 引入包
 local Formula = require('formula')
 
+-- 定义包
 local module = {}
 
 -- Monster怪物基础类
@@ -9,6 +11,7 @@ module.Monster = {
 	level = 1,
 	experience = 5,
 	skill = nil,
+	maxHealth = 20,
 	health = 20,
 	attack = 5,
 	defence = 0
@@ -27,23 +30,23 @@ end
 function module.Monster:init(level)
 	level = level or self.level
 	self.experience = self.experience * (1 + 0.05 * (level - 1))
-	self.health = self.health * (1 + 0.05 * (level - 1))
+	self.health = self.maxHealth * (1 + 0.05 * (level - 1))
 	self.attack = self.attack * (1 + 0.05 * (level - 1))
 	self.defence = self.defence * (1 + 0.05 * (level - 1))
 end
 
 function module.Monster:beAttack(atk)
 	local damage = Formula.calDamage(atk, self.defence)
-	print(self.species..self.name..'受到了'..damage..'点伤害，(•́へ•́╬)')
+	print(self.species..': '..self.name..'受到了'..damage..'点伤害，(•́へ•́╬)')
 	self.health = self.health - damage
 	if self.health < 0 then
-		return self.death()
+		return self:death()
 	end
 	return false
 end
 
 function module.Monster:death()
-	print(self.species..self.name..'再起不能 _(:ι」∠)_')
+	print(self.species..': '..self.name..'再起不能 _(:ι」∠)_')
 	return self.experience
 end
 
@@ -55,8 +58,9 @@ end
 module.Slime = module.Monster:new({
 	experience = 5,
 	skill = nil,
+	maxHealth = 20,
 	health = 20,
-	attack = 5,
+	attack = 12,
 	defence = 0
 }, nil, 'slime', nil)
 
