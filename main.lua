@@ -1,16 +1,18 @@
--- å¼•å…¥åŒ…
-local Player = require('player').Player
+-- ÒýÈë°ü
+local Player = require('player')
 local Monster = require('monster')
 
--- æˆ˜æ–—ç±»
+-- Õ½¶·Àà
 local Battle
 Battle = {
-    battleBegin = function (player, monster)
+    battleStart = function (player, monster)
         print('--------------------------------------')
-        print('ä¸€åªé‡Žç”Ÿçš„'..monster.species..': '..monster.name..'å‡ºçŽ°äº†!!! Ïˆ(*ï½€ãƒ¼Â´)Ïˆ')
+        print('Ò»Ö»Ò°ÉúµÄ'..monster.species..': '..monster.name..'³öÏÖÁË!!! ¦×(*£à©`?)¦×')
         local result = ''
         local experience = 0
         while true do
+            print(player.health,player.attack,player.defence,monster.level,monster.health,monster.attack,monster.defence)
+            io.read()
             experience = monster:beAttack(player.attack)
             if experience then
                 result = 'monster'
@@ -18,27 +20,68 @@ Battle = {
             elseif player:beAttack(monster.attack) then
                 result = 'player'
                 break
-            else end
+            else
+                print('¡£¡£¡£')
+            end
         end
         Battle.battleEnd(result, player, experience)
         return result
     end,
     battleEnd = function(result, player, experience)
         if result == 'monster' then
-            print('--æˆ˜æ–—ç»“æžœ--')
-            print('--'..player.name..'å‰©ä½™è¡€é‡'..player.health..'--')
+            print('--Õ½¶·½á¹û--')
+            print('--'..player.name..'Ê£ÓàÑªÁ¿'..player.health..'--')
             player:getExperience(experience)
         end
     end
 }
 
-local player1 = Player:new(nil, 'Jerry', 'warriop')
-local player2 = Player:new(nil, 'Tom', 'berserker')
-local slime1 = Monster.Slime:new(nil, 'mobu', 2)
-
-while true do
-    if Battle.battleBegin(player2, slime1) == 'player' or player2.level == 2 then
-        break
+-- Á÷³Ì¿ØÖÆÀà
+local Control
+Control = {
+    gameStart = function()
+        print('»¶Ó­½øÈëÓÎÏ·£¬±¾ÓÎÏ·»¹´¦ÓÚ¿ª·¢×´Ì¬£¬ÈçÓÐBUG£¬Çë°®Ï§ÄúµÄµçÄÔ£¨ÉÌÒµÐÔµÄÎ¢Ð¦£©')
+        print('»»¾ä»°Ëµ£¬Æ¾±¾ÊÂÐ´µÄBUG£¬ÎªÊ²Ã´ÒªÐÞ £þ¤Ø£þ£¨Îó£©\n')
+        Control.selectProfession()
+        while true do
+            local monster = Control.monsterAppear()
+            if Battle.battleStart(PLAYER, monster) == 'player' then
+                break
+            end
+        end
+    end,
+    selectProfession = function()
+        local proStr, i = '', 1
+        if Player.Profession then
+            for k, v in pairs(Player.Profession) do
+                proStr = proStr..i..': '..k..', '
+                i = i + 1
+            end
+        end
+        print('ÇëÑ¡ÔñÖ°Òµ '..proStr)
+        local selectPro = ''
+        while true do
+            print('ÇëÊäÈëÒÔÉÏÖ°ÒµÖ®Ò» ©c(©`_©`)¥Î')
+            selectPro = io.read()
+            if (Player.Profession and Player.Profession[selectPro]) then
+                break
+            end
+        end
+        print('¹§Ï²Äã¼´½«³ÉÎªÒ»ÃûÎ°´óµÄ'..selectPro..'£¨°ô¶Á£©£¬½ÓÏÂÀ´ÇëÊäÈëÄãµÄÃû×Ö°É')
+        local selectName = io.read()
+        PLAYER = Player.Player:new(nil, selectName, selectPro)
+        print('ºÃµÄ£¬ÇëÎÒÃÇµÄ'..selectPro..' '..selectName..'×¼±¸ºÃÌ¤ÉÏÃ°ÏÕ£¨Ð¡°×Êó£©Ö®ÂÃ°É')
+        print('--ÄãÄ¿Ç°µÄÊôÐÔÊÇ: '..'\n--ÑªÁ¿: '..PLAYER.health..'\n--¹¥»÷Á¦: '..PLAYER.attack..'\n--ÉËº¦¼õÃâ: '..PLAYER.defence..'\n--¼¼ÄÜ: '..PLAYER.skill..'\n--µÈ¼¶: '..PLAYER.level)
+    end,
+    monsterAppear = function()
+        local monsterNum = #Monster.Species - 1
+        local seed = math.random() * monsterNum
+        if (seed > 0.01 * PLAYER.level ^ 2) then
+            return Monster.Species[math.ceil(seed)]:new()
+        else
+            return Monster.ScarletKing:new()
+        end
     end
-    slime1 = Monster.Slime:new(nil, 'mobu', 2)
-end
+}
+
+Control.gameStart()

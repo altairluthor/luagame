@@ -1,4 +1,4 @@
--- å®šä¹‰åŒ…
+-- ¶¨Òå°ü
 local module = {}
 
 math.randomseed(tostring(os.time()):reverse():sub(1, 7))

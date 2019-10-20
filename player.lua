@@ -1,10 +1,10 @@
--- å¼•å…¥åŒ…
+-- ÒıÈë°ü
 local Formula = require('formula')
 
--- å®šä¹‰åŒ…
+-- ¶¨Òå°ü
 local module = {}
 
--- èŒä¸šè¡¨
+-- Ö°Òµ±í
 module.Profession = {
 	caster = {
 		defaultValue = {
@@ -48,7 +48,7 @@ module.Profession = {
 	}
 }
 
--- è§’è‰²ç±»
+-- ½ÇÉ«Àà
 module.Player = {
 	name = '',
 	profession = '',
@@ -78,7 +78,7 @@ end
 
 function module.Player:beAttack(atk)
 	local damage = Formula.calDamage(atk, self.defence)
-	print(self.name..'å—åˆ°äº†'..damage..'ç‚¹ä¼¤å®³ï¼Œä¹‚(ï¾ŸĞ”ï¾Ÿä¸‰ï¾ŸĞ”ï¾Ÿ)ä¹‚Â ')
+	print(self.name..'ÊÜµ½ÁË'..damage..'µãÉËº¦£¬?V(?§¥?Èı?§¥?)V?')
 	self.health = self.health - damage
 	if self.health < 0 then
 		self.death()
@@ -88,7 +88,7 @@ function module.Player:beAttack(atk)
 end
 
 function module.Player:death()
-	print('ä½ æ­»äº†, o(Â´^ï½€)o')
+	print('ÄãËÀÁË, o(?^£à)o')
 end
 
 function module.Player:useSkill()
@@ -96,13 +96,13 @@ function module.Player:useSkill()
 end
 
 function module.Player:getExperience(exp)
-	print('--è·å¾—ç»éªŒ'..exp..'--')
+	print('--»ñµÃ¾­Ñé'..exp..'--')
 	self.experience = self.experience + exp
 	local experienceToLevelup = Formula.experienceToLevelup(self.level - 1, self.experience)
 	if experienceToLevelup < 0 then
 		self:levelUp()
 	else
-		print('--å‡çº§è¿˜å‰©ç»éªŒ'..experienceToLevelup..'--')
+		print('--Éı¼¶»¹Ê£¾­Ñé'..experienceToLevelup..'--')
 	end
 end
 
@@ -112,7 +112,7 @@ function module.Player:levelUp()
 	self.defence = self.defence * 1.05
 	self.experience = 0
 	self.health = self.maxHealth
-	print('--'..self.name..'ç­‰çº§æå‡ï¼Œ(Ïƒï¾Ÿâˆ€ï¾Ÿ)Ïƒ--')
+	print('--'..self.name..'µÈ¼¶ÌáÉı£¬(¦Ò???)¦Ò--')
 	return self.skill
 end
 

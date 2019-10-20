@@ -1,10 +1,10 @@
--- å¼•å…¥åŒ…
+-- ÒıÈë°ü
 local Formula = require('formula')
 
--- å®šä¹‰åŒ…
+-- ¶¨Òå°ü
 local module = {}
 
--- Monsteræ€ªç‰©åŸºç¡€ç±»
+-- Monster¹ÖÎï»ù´¡Àà
 module.Monster = {
 	name = '',
 	species = 'monster',
@@ -12,7 +12,6 @@ module.Monster = {
 	experience = 5,
 	skill = nil,
 	maxHealth = 20,
-	health = 20,
 	attack = 5,
 	defence = 0
 }
@@ -37,7 +36,7 @@ end
 
 function module.Monster:beAttack(atk)
 	local damage = Formula.calDamage(atk, self.defence)
-	print(self.species..': '..self.name..'å—åˆ°äº†'..damage..'ç‚¹ä¼¤å®³ï¼Œ(â€¢Ìã¸â€¢Ìâ•¬)')
+	print(self.species..': '..self.name..'ÊÜµ½ÁË'..damage..'µãÉËº¦£¬(??¤Ø??¨p)')
 	self.health = self.health - damage
 	if self.health < 0 then
 		return self:death()
@@ -46,7 +45,7 @@ function module.Monster:beAttack(atk)
 end
 
 function module.Monster:death()
-	print(self.species..': '..self.name..'å†èµ·ä¸èƒ½ _(:Î¹ã€âˆ )_')
+	print(self.species..': '..self.name..'ÔÙÆğ²»ÄÜ _(:¦É¡¹¡Ï)_')
 	return self.experience
 end
 
@@ -54,15 +53,14 @@ function module.Monster:useSkill()
 	return self.skill
 end
 
--- å²è±å§†å­ç±»
+-- Ê·À³Ä·×ÓÀà
 module.Slime = module.Monster:new({
 	experience = 5,
 	skill = nil,
 	maxHealth = 20,
-	health = 20,
 	attack = 12,
 	defence = 0
-}, nil, 'slime', nil)
+}, nil, 'slime')
 
 function module.Slime:new(slime, name, level)
 	slime =  setmetatable(slime or {}, self)
@@ -72,5 +70,86 @@ function module.Slime:new(slime, name, level)
 	slime:init(slime.level)
 	return slime
 end
+
+-- ÀÇÈË×ÓÀà
+module.Werewolf = module.Monster:new({
+	experience = 13,
+	skill = nil,
+	maxHealth = 24,
+	attack = 18,
+	defence = 2
+}, nil, 'werewolf')
+
+function module.Werewolf:new(werewolf, name, level)
+	werewolf =  setmetatable(werewolf or {}, self)
+	self.__index = self
+	werewolf.name = name or werewolf.name
+	werewolf.level = level or werewolf.level
+	werewolf:init(werewolf.level)
+	return werewolf
+end
+
+-- Éß¹Ö×ÓÀà
+module.Basilisk = module.Monster:new({
+	experience = 11,
+	skill = nil,
+	maxHealth = 20,
+	attack = 15,
+	defence = 2
+}, nil, 'basilisk')
+
+function module.Basilisk:new(basilisk, name, level)
+	basilisk =  setmetatable(basilisk or {}, self)
+	self.__index = self
+	basilisk.name = name or basilisk.name
+	basilisk.level = level or basilisk.level
+	basilisk:init(basilisk.level)
+	return basilisk
+end
+
+-- ¾Ş¹Ö×ÓÀà
+module.Troll = module.Monster:new({
+	experience = 11,
+	skill = nil,
+	maxHealth = 20,
+	attack = 15,
+	defence = 2
+}, nil, 'troll')
+
+function module.Troll:new(troll, name, level)
+	troll =  setmetatable(troll or {}, self)
+	self.__index = self
+	troll.name = name or troll.name
+	troll.level = level or troll.level
+	troll:init(troll.level)
+	return troll
+end
+
+-- BOSS-ÉîºìÖ®Íõ×ÓÀà
+module.ScarletKing = module.Monster:new({
+	experience = 5,
+	skill = nil,
+	maxHealth = 150,
+	attack = 25,
+	defence = 15
+}, 'Scarlet King', 'boss')
+
+function module.ScarletKing:new(king, name, level)
+	king =  setmetatable(king or {}, self)
+	self.__index = self
+	king.name = name or king.name
+	king.level = level or king.level
+	king:init(king.level)
+	return king
+end
+
+-- ¹ÖÎïÖÖ×å±í
+module.Species = {
+	[1] = module.Slime,
+	[2] = module.Werewolf,
+	[3] = module.Basilisk,
+	[4] = module.Troll,
+	[5] = module.ScarletKing
+}
 
 return module
