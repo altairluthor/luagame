@@ -22,14 +22,14 @@ function module.Monster:new(monster, name, species, level)
 	monster.name = name or monster.name
 	monster.species = species or monster.species
 	monster.level = level or monster.level
-	monster:init(level or monster.level)
+	monster:init()
 	return monster
 end
 
 function module.Monster:init(level)
 	level = level or self.level
 	self.experience = self.experience * (1 + 0.05 * (level - 1))
-	self.health = self.maxHealth * (1 + 0.05 * (level - 1))
+	self.health = self.maxHealth
 	self.attack = self.attack * (1 + 0.05 * (level - 1))
 	self.defence = self.defence * (1 + 0.05 * (level - 1))
 end
@@ -67,7 +67,7 @@ function module.Slime:new(slime, name, level)
 	self.__index = self
 	slime.name = name or slime.name
 	slime.level = level or slime.level
-	slime:init(slime.level)
+	slime:init()
 	return slime
 end
 
@@ -85,7 +85,7 @@ function module.Werewolf:new(werewolf, name, level)
 	self.__index = self
 	werewolf.name = name or werewolf.name
 	werewolf.level = level or werewolf.level
-	werewolf:init(werewolf.level)
+	werewolf:init()
 	return werewolf
 end
 
@@ -103,7 +103,7 @@ function module.Basilisk:new(basilisk, name, level)
 	self.__index = self
 	basilisk.name = name or basilisk.name
 	basilisk.level = level or basilisk.level
-	basilisk:init(basilisk.level)
+	basilisk:init()
 	return basilisk
 end
 
@@ -121,7 +121,7 @@ function module.Troll:new(troll, name, level)
 	self.__index = self
 	troll.name = name or troll.name
 	troll.level = level or troll.level
-	troll:init(troll.level)
+	troll:init()
 	return troll
 end
 
@@ -131,7 +131,7 @@ module.ScarletKing = module.Monster:new({
 	skill = nil,
 	maxHealth = 150,
 	attack = 25,
-	defence = 15
+	defence = 10
 }, 'Scarlet King', 'boss')
 
 function module.ScarletKing:new(king, name, level)
@@ -139,7 +139,7 @@ function module.ScarletKing:new(king, name, level)
 	self.__index = self
 	king.name = name or king.name
 	king.level = level or king.level
-	king:init(king.level)
+	king:init()
 	return king
 end
 

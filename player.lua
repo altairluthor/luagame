@@ -76,15 +76,25 @@ function module.Player:new(player, name, profession)
 	return player
 end
 
-function module.Player:beAttack(atk)
-	local damage = Formula.calDamage(atk, self.defence)
+function module.Player:beAttack(atk, behavior)
+	local damage = 0
+	local result = false
+	if (behavior == 2) then
+		damage = Formula.calDamage(atk, self.defence * 2)
+		result = 'defense'
+	elseif (behavior == 3) and (math.random() < 0.1) then
+		damage = 0
+		result = 'dodge'
+	else
+		damage = Formula.calDamage(atk, self.defence)
+	end
 	print(self.name..'受到了'..damage..'点伤害，?乂(?Д?三?Д?)乂?')
 	self.health = self.health - damage
 	if self.health < 0 then
 		self.death()
-		return true
+		result = 'death'
 	end
-	return false
+	return result
 end
 
 function module.Player:death()
@@ -108,8 +118,8 @@ end
 
 function module.Player:levelUp()
 	self.level = self.level + 1
-	self.attack = self.attack * 1.05
-	self.defence = self.defence * 1.05
+	self.attack = self.attack * 1.08
+	self.defence = self.defence * 1.08
 	self.experience = 0
 	self.health = self.maxHealth
 	print('--'..self.name..'等级提升，(σ???)σ--')

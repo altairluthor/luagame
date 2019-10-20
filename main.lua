@@ -1,6 +1,13 @@
+-- todo：概率函数，按输入的概率返回布林值
+-- todo: 剧情描述用文件保存，使用统一的类中的方法引入
+-- todo: 伤害计算不合理，常出现不破防情况，应优化公式，提高防御重要性同时保证低伤害的表现
+-- todo: 地带怪物加成机制，地带怪物出现概率机制，准备实现
 -- 引入包
 local Player = require('player')
 local Monster = require('monster')
+
+MAXLEVEL = 40
+PLAYER = {}
 
 -- 战斗类
 local Battle
@@ -9,19 +16,44 @@ Battle = {
         print('--------------------------------------')
         print('一只野生的'..monster.species..': '..monster.name..'出现了!!! ψ(*｀ー?)ψ')
         local result = ''
-        local experience = 0
+        local experience = false
+        local playerResult = ''
         while true do
-            print(player.health,player.attack,player.defence,monster.level,monster.health,monster.attack,monster.defence)
-            io.read()
-            experience = monster:beAttack(player.attack)
-            if experience then
-                result = 'monster'
-                break
-            elseif player:beAttack(monster.attack) then
+            -- print(player.health,player.attack,player.defence,monster.level,monster.health,monster.attack,monster.defence)
+            print('。。。。。。\n选择吧 1：攻击，2：防御，3：回避')
+            local behavior = io.read('*n')
+            -- 采用攻击行动，玩家先手
+            if behavior ~= 2 and behavior ~= 3 then
+                print('欧拉欧拉!!!')
+                experience = monster:beAttack(player.attack)
+                if experience then
+                    result = 'monster'
+                    break
+                end
+            end
+            -- 防御或回避玩家后手，或攻击完成怪物开始行动
+            playerResult = player:beAttack(monster.attack, behavior)
+            if playerResult == 'death' then
                 result = 'player'
                 break
+            elseif playerResult == 'defense' then
+                print('雪花之壁!!!')
+                experience = monster:beAttack(player.attack * 0.5)
+                if experience then
+                    result = 'monster'
+                    break
+                end
+            elseif playerResult == 'dodge' then
+                print('避矢之加护!!!')
+                experience = monster:beAttack(player.attack)
+                if experience then
+                    result = 'monster'
+                    break
+                end
             else
-                print('。。。')
+                if behavior == 3 then
+                    print('膝盖中了一箭。。。')
+                end
             end
         end
         Battle.battleEnd(result, player, experience)
@@ -45,10 +77,22 @@ Control = {
         Control.selectProfession()
         while true do
             local monster = Control.monsterAppear()
-            if Battle.battleStart(PLAYER, monster) == 'player' then
+            local result = Battle.battleStart(PLAYER, monster) 
+            if result == 'player' then
+                Control.gameEnd('death')
                 break
-            end
+            elseif result == 'monster' and monster.species == 'boss' then
+                Control.gameEnd('win')
+                break
+            else end
         end
+    end,
+    gameEnd = function (type)
+        if (type == 'win') then
+            print('小白鼠成功走出了笼子(～￣▽￣)～ ')
+        elseif (type == 'death') then
+            print('游戏结束')
+        else end
     end,
     selectProfession = function()
         local proStr, i = '', 1
@@ -76,10 +120,12 @@ Control = {
     monsterAppear = function()
         local monsterNum = #Monster.Species - 1
         local seed = math.random() * monsterNum
+        local level = math.min(PLAYER.level * (1 + (math.random() * 0.5 - 0.1)), MAXLEVEL)
+        level = math.ceil(level)
         if (seed > 0.01 * PLAYER.level ^ 2) then
-            return Monster.Species[math.ceil(seed)]:new()
+            return Monster.Species[math.ceil(seed)]:new(nil, nil, level)
         else
-            return Monster.ScarletKing:new()
+            return Monster.ScarletKing:new(nil, nil, level)
         end
     end
 }
