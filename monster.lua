@@ -36,7 +36,7 @@ end
 
 function module.Monster:beAttack(atk)
 	local damage = Formula.calDamage(atk, self.defence)
-	print(self.species..': '..self.name..'受到了'..damage..'点伤害，(??へ??╬)')
+	print(self.species..': '..self.name..'受到了'..damage..'点伤害，(￣へ￣╬)')
 	self.health = self.health - damage
 	if self.health < 0 then
 		return self:death()

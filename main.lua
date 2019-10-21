@@ -14,7 +14,7 @@ local Battle
 Battle = {
     battleStart = function (player, monster)
         print('--------------------------------------')
-        print('一只野生的'..monster.species..': '..monster.name..'出现了!!! ψ(*｀ー?)ψ')
+        print('一只野生的'..monster.species..': '..monster.name..'出现了!!! ψ(*￣ー￣)ψ')
         local result = ''
         local experience = false
         local playerResult = ''

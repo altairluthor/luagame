@@ -88,7 +88,7 @@ function module.Player:beAttack(atk, behavior)
 	else
 		damage = Formula.calDamage(atk, self.defence)
 	end
-	print(self.name..'受到了'..damage..'点伤害，?乂(?Д?三?Д?)乂?')
+	print(self.name..'受到了'..damage..'点伤害， 乂(*Д*三*Д*)乂 ')
 	self.health = self.health - damage
 	if self.health < 0 then
 		self.death()
@@ -98,7 +98,7 @@ function module.Player:beAttack(atk, behavior)
 end
 
 function module.Player:death()
-	print('你死了, o(?^｀)o')
+	print('你死了, o(￣^￣)o')
 end
 
 function module.Player:useSkill()
@@ -122,7 +122,7 @@ function module.Player:levelUp()
 	self.defence = self.defence * 1.08
 	self.experience = 0
 	self.health = self.maxHealth
-	print('--'..self.name..'等级提升，(σ???)σ--')
+	print('--'..self.name..'等级提升，(σ￣▽￣)σ--')
 	return self.skill
 end
 
