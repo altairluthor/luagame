@@ -12,7 +12,7 @@ math.randomseed(tostring(os.time()):reverse():sub(1, 7))
 function module.calDamage(atk, def, adj, adjAdd)
     adj = adj or 1
     adjAdd = adjAdd or 0
-    def = math.min(def, 100)
+    def = math.min(def, 95)
     local result = atk * module.rangeRandom(0.9, 1.1) * (1 - def / 100) * adj + adjAdd
     if result < 0 then
         result = 0

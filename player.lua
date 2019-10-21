@@ -42,7 +42,7 @@ module.Profession = {
 		defaultValue = {
 			health = 120,
 			attack = 8,
-			defence = 30
+			defence = 25
 		},
 		skill = 'boom'
 	}

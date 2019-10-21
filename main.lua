@@ -1,5 +1,4 @@
 -- todo: 剧情描述用文件保存，使用统一的类中的方法引入
--- todo: 伤害计算不合理，常出现不破防情况，应优化公式，提高防御重要性同时保证低伤害的表现
 -- todo: 地带怪物加成机制，地带怪物出现概率机制，准备实现
 -- 引入包
 local Player = require('player')
@@ -44,7 +43,7 @@ Battle = {
                 break
             elseif playerResult == 'defense' then
                 print('雪花之壁!!!')
-                experience = monster:beAttack(player.attack * 0.5)
+                experience = monster:beAttack(player.attack * 0.6)
                 if experience then
                     result = 'monster'
                     break
