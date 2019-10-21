@@ -82,7 +82,7 @@ function module.Player:beAttack(atk, behavior)
 	if (behavior == 2) then
 		damage = Formula.calDamage(atk, self.defence * 2)
 		result = 'defense'
-	elseif (behavior == 3) and (math.random() < 0.1) then
+	elseif (behavior == 3) and (Formula.probabilityRandom(10)) then
 		damage = 0
 		result = 'dodge'
 	else

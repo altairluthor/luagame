@@ -1,10 +1,10 @@
--- todo：概率函数，按输入的概率返回布林值
 -- todo: 剧情描述用文件保存，使用统一的类中的方法引入
 -- todo: 伤害计算不合理，常出现不破防情况，应优化公式，提高防御重要性同时保证低伤害的表现
 -- todo: 地带怪物加成机制，地带怪物出现概率机制，准备实现
 -- 引入包
 local Player = require('player')
 local Monster = require('monster')
+local Formula = require('formula')
 
 MAXLEVEL = 40
 PLAYER = {}
@@ -18,13 +18,18 @@ Battle = {
         local result = ''
         local experience = false
         local playerResult = ''
+        local behavior = 1
         while true do
             -- print(player.health,player.attack,player.defence,monster.level,monster.health,monster.attack,monster.defence)
             print('。。。。。。\n选择吧 1：攻击，2：防御，3：回避')
-            local behavior = io.read('*n')
+            behavior = io.read('*n')
+            if not behavior then
+                io.read()
+                behavior = 1
+            end
             -- 采用攻击行动，玩家先手
             if behavior ~= 2 and behavior ~= 3 then
-                print('欧拉欧拉!!!')
+                print(player.name..': 欧拉欧拉!!!')
                 experience = monster:beAttack(player.attack)
                 if experience then
                     result = 'monster'
@@ -32,6 +37,7 @@ Battle = {
                 end
             end
             -- 防御或回避玩家后手，或攻击完成怪物开始行动
+            print(monster.species..' '..monster.name..': wyyyyyy!!!')
             playerResult = player:beAttack(monster.attack, behavior)
             if playerResult == 'death' then
                 result = 'player'
@@ -118,14 +124,14 @@ Control = {
         print('--你目前的属性是: '..'\n--血量: '..PLAYER.health..'\n--攻击力: '..PLAYER.attack..'\n--伤害减免: '..PLAYER.defence..'\n--技能: '..PLAYER.skill..'\n--等级: '..PLAYER.level)
     end,
     monsterAppear = function()
-        local monsterNum = #Monster.Species - 1
-        local seed = math.random() * monsterNum
-        local level = math.min(PLAYER.level * (1 + (math.random() * 0.5 - 0.1)), MAXLEVEL)
-        level = math.ceil(level)
-        if (seed > 0.01 * PLAYER.level ^ 2) then
-            return Monster.Species[math.ceil(seed)]:new(nil, nil, level)
-        else
+        local level = math.min(PLAYER.level + math.ceil(Formula.rangeRandom(-5, 4)), MAXLEVEL)
+        if level < 1 then
+            level = 1
+        end
+        if (Formula.probabilityRandom(1 * PLAYER.level ^ 2)) then
             return Monster.ScarletKing:new(nil, nil, level)
+        else
+            return Monster.Species[math.ceil(Formula.rangeRandom(0, 4))]:new(nil, nil, level)
         end
     end
 }

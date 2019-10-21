@@ -36,7 +36,7 @@ end
 
 function module.Monster:beAttack(atk)
 	local damage = Formula.calDamage(atk, self.defence)
-	print(self.species..': '..self.name..'受到了'..damage..'点伤害，(￣へ￣╬)')
+	print(self.species..' '..self.name..'受到了'..damage..'点伤害，(￣へ￣╬)')
 	self.health = self.health - damage
 	if self.health < 0 then
 		return self:death()
@@ -45,7 +45,7 @@ function module.Monster:beAttack(atk)
 end
 
 function module.Monster:death()
-	print(self.species..': '..self.name..'再起不能 _(:ι」∠)_')
+	print(self.species..' '..self.name..'再起不能 _(:ι」∠)_')
 	return self.experience
 end
 
@@ -109,11 +109,11 @@ end
 
 -- 巨怪子类
 module.Troll = module.Monster:new({
-	experience = 11,
+	experience = 25,
 	skill = nil,
-	maxHealth = 20,
-	attack = 15,
-	defence = 2
+	maxHealth = 25,
+	attack = 18,
+	defence = 5
 }, nil, 'troll')
 
 function module.Troll:new(troll, name, level)
