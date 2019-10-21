@@ -1,50 +1,50 @@
--- todoï¼šæ¦‚ç‡å‡½æ•°ï¼ŒæŒ‰è¾“å…¥çš„æ¦‚ç‡è¿”å›å¸ƒæ—å€¼
--- todo: å‰§æƒ…æè¿°ç”¨æ–‡ä»¶ä¿å­˜ï¼Œä½¿ç”¨ç»Ÿä¸€çš„ç±»ä¸­çš„æ–¹æ³•å¼•å…¥
--- todo: ä¼¤å®³è®¡ç®—ä¸åˆç†ï¼Œå¸¸å‡ºç°ä¸ç ´é˜²æƒ…å†µï¼Œåº”ä¼˜åŒ–å…¬å¼ï¼Œæé«˜é˜²å¾¡é‡è¦æ€§åŒæ—¶ä¿è¯ä½ä¼¤å®³çš„è¡¨ç°
--- todo: åœ°å¸¦æ€ªç‰©åŠ æˆæœºåˆ¶ï¼Œåœ°å¸¦æ€ªç‰©å‡ºç°æ¦‚ç‡æœºåˆ¶ï¼Œå‡†å¤‡å®ç°
--- å¼•å…¥åŒ…
+-- todo£º¸ÅÂÊº¯Êı£¬°´ÊäÈëµÄ¸ÅÂÊ·µ»Ø²¼ÁÖÖµ
+-- todo: ¾çÇéÃèÊöÓÃÎÄ¼ş±£´æ£¬Ê¹ÓÃÍ³Ò»µÄÀàÖĞµÄ·½·¨ÒıÈë
+-- todo: ÉËº¦¼ÆËã²»ºÏÀí£¬³£³öÏÖ²»ÆÆ·ÀÇé¿ö£¬Ó¦ÓÅ»¯¹«Ê½£¬Ìá¸ß·ÀÓùÖØÒªĞÔÍ¬Ê±±£Ö¤µÍÉËº¦µÄ±íÏÖ
+-- todo: µØ´ø¹ÖÎï¼Ó³É»úÖÆ£¬µØ´ø¹ÖÎï³öÏÖ¸ÅÂÊ»úÖÆ£¬×¼±¸ÊµÏÖ
+-- ÒıÈë°ü
 local Player = require('player')
 local Monster = require('monster')
 
 MAXLEVEL = 40
 PLAYER = {}
 
--- æˆ˜æ–—ç±»
+-- Õ½¶·Àà
 local Battle
 Battle = {
     battleStart = function (player, monster)
         print('--------------------------------------')
-        print('ä¸€åªé‡ç”Ÿçš„'..monster.species..': '..monster.name..'å‡ºç°äº†!!! Ïˆ(ï¿£ãƒ¼ï¿£)Ïˆ')
+        print('Ò»Ö»Ò°ÉúµÄ'..monster.species..': '..monster.name..'³öÏÖÁË!!! ¦×(£ş©`£ş)¦×')
         local result = ''
         local experience = false
         local playerResult = ''
         while true do
             -- print(player.health,player.attack,player.defence,monster.level,monster.health,monster.attack,monster.defence)
-            print('ã€‚ã€‚ã€‚ã€‚ã€‚ã€‚\né€‰æ‹©å§ 1ï¼šæ”»å‡»ï¼Œ2ï¼šé˜²å¾¡ï¼Œ3ï¼šå›é¿')
+            print('¡£¡£¡£¡£¡£¡£\nÑ¡Ôñ°É 1£º¹¥»÷£¬2£º·ÀÓù£¬3£º»Ø±Ü')
             local behavior = io.read('*n')
-            -- é‡‡ç”¨æ”»å‡»è¡ŒåŠ¨ï¼Œç©å®¶å…ˆæ‰‹
+            -- ²ÉÓÃ¹¥»÷ĞĞ¶¯£¬Íæ¼ÒÏÈÊÖ
             if behavior ~= 2 and behavior ~= 3 then
-                print('æ¬§æ‹‰æ¬§æ‹‰!!!')
+                print('Å·À­Å·À­!!!')
                 experience = monster:beAttack(player.attack)
                 if experience then
                     result = 'monster'
                     break
                 end
             end
-            -- é˜²å¾¡æˆ–å›é¿ç©å®¶åæ‰‹ï¼Œæˆ–æ”»å‡»å®Œæˆæ€ªç‰©å¼€å§‹è¡ŒåŠ¨
+            -- ·ÀÓù»ò»Ø±ÜÍæ¼ÒºóÊÖ£¬»ò¹¥»÷Íê³É¹ÖÎï¿ªÊ¼ĞĞ¶¯
             playerResult = player:beAttack(monster.attack, behavior)
             if playerResult == 'death' then
                 result = 'player'
                 break
             elseif playerResult == 'defense' then
-                print('é›ªèŠ±ä¹‹å£!!!')
+                print('Ñ©»¨Ö®±Ú!!!')
                 experience = monster:beAttack(player.attack * 0.5)
                 if experience then
                     result = 'monster'
                     break
                 end
             elseif playerResult == 'dodge' then
-                print('é¿çŸ¢ä¹‹åŠ æŠ¤!!!')
+                print('±ÜÊ¸Ö®¼Ó»¤!!!')
                 experience = monster:beAttack(player.attack)
                 if experience then
                     result = 'monster'
@@ -52,7 +52,7 @@ Battle = {
                 end
             else
                 if behavior == 3 then
-                    print('è†ç›–ä¸­äº†ä¸€ç®­ã€‚ã€‚ã€‚')
+                    print('Ï¥¸ÇÖĞÁËÒ»¼ı¡£¡£¡£')
                 end
             end
         end
@@ -61,19 +61,19 @@ Battle = {
     end,
     battleEnd = function(result, player, experience)
         if result == 'monster' then
-            print('--æˆ˜æ–—ç»“æœ--')
-            print('--'..player.name..'å‰©ä½™è¡€é‡'..player.health..'--')
+            print('--Õ½¶·½á¹û--')
+            print('--'..player.name..'Ê£ÓàÑªÁ¿'..player.health..'--')
             player:getExperience(experience)
         end
     end
 }
 
--- æµç¨‹æ§åˆ¶ç±»
+-- Á÷³Ì¿ØÖÆÀà
 local Control
 Control = {
     gameStart = function()
-        print('æ¬¢è¿è¿›å…¥æ¸¸æˆï¼Œæœ¬æ¸¸æˆè¿˜å¤„äºå¼€å‘çŠ¶æ€ï¼Œå¦‚æœ‰BUGï¼Œè¯·çˆ±æƒœæ‚¨çš„ç”µè„‘ï¼ˆå•†ä¸šæ€§çš„å¾®ç¬‘ï¼‰')
-        print('æ¢å¥è¯è¯´ï¼Œå‡­æœ¬äº‹å†™çš„BUGï¼Œä¸ºä»€ä¹ˆè¦ä¿® ï¿£ã¸ï¿£ï¼ˆè¯¯ï¼‰\n')
+        print('»¶Ó­½øÈëÓÎÏ·£¬±¾ÓÎÏ·»¹´¦ÓÚ¿ª·¢×´Ì¬£¬ÈçÓĞBUG£¬Çë°®Ï§ÄúµÄµçÄÔ£¨ÉÌÒµĞÔµÄÎ¢Ğ¦£©')
+        print('»»¾ä»°Ëµ£¬Æ¾±¾ÊÂĞ´µÄBUG£¬ÎªÊ²Ã´ÒªĞŞ £ş¤Ø£ş£¨Îó£©\n')
         Control.selectProfession()
         while true do
             local monster = Control.monsterAppear()
@@ -89,9 +89,9 @@ Control = {
     end,
     gameEnd = function (type)
         if (type == 'win') then
-            print('å°ç™½é¼ æˆåŠŸèµ°å‡ºäº†ç¬¼å­(ï½ï¿£â–½ï¿£)ï½ ')
+            print('Ğ¡°×Êó³É¹¦×ß³öÁËÁı×Ó(¡«£ş¨Œ£ş)¡« ')
         elseif (type == 'death') then
-            print('æ¸¸æˆç»“æŸ')
+            print('ÓÎÏ·½áÊø')
         else end
     end,
     selectProfession = function()
@@ -102,20 +102,20 @@ Control = {
                 i = i + 1
             end
         end
-        print('è¯·é€‰æ‹©èŒä¸š '..proStr)
+        print('ÇëÑ¡ÔñÖ°Òµ '..proStr)
         local selectPro = ''
         while true do
-            print('è¯·è¾“å…¥ä»¥ä¸ŠèŒä¸šä¹‹ä¸€ ãƒ½(ãƒ¼_ãƒ¼)ãƒ')
+            print('ÇëÊäÈëÒÔÉÏÖ°ÒµÖ®Ò» ©c(©`_©`)¥Î')
             selectPro = io.read()
             if (Player.Profession and Player.Profession[selectPro]) then
                 break
             end
         end
-        print('æ­å–œä½ å³å°†æˆä¸ºä¸€åä¼Ÿå¤§çš„'..selectPro..'ï¼ˆæ£’è¯»ï¼‰ï¼Œæ¥ä¸‹æ¥è¯·è¾“å…¥ä½ çš„åå­—å§')
+        print('¹§Ï²Äã¼´½«³ÉÎªÒ»ÃûÎ°´óµÄ'..selectPro..'£¨°ô¶Á£©£¬½ÓÏÂÀ´ÇëÊäÈëÄãµÄÃû×Ö°É')
         local selectName = io.read()
         PLAYER = Player.Player:new(nil, selectName, selectPro)
-        print('å¥½çš„ï¼Œè¯·æˆ‘ä»¬çš„'..selectPro..' '..selectName..'å‡†å¤‡å¥½è¸ä¸Šå†’é™©ï¼ˆå°ç™½é¼ ï¼‰ä¹‹æ—…å§')
-        print('--ä½ ç›®å‰çš„å±æ€§æ˜¯: '..'\n--è¡€é‡: '..PLAYER.health..'\n--æ”»å‡»åŠ›: '..PLAYER.attack..'\n--ä¼¤å®³å‡å…: '..PLAYER.defence..'\n--æŠ€èƒ½: '..PLAYER.skill..'\n--ç­‰çº§: '..PLAYER.level)
+        print('ºÃµÄ£¬ÇëÎÒÃÇµÄ'..selectPro..' '..selectName..'×¼±¸ºÃÌ¤ÉÏÃ°ÏÕ£¨Ğ¡°×Êó£©Ö®ÂÃ°É')
+        print('--ÄãÄ¿Ç°µÄÊôĞÔÊÇ: '..'\n--ÑªÁ¿: '..PLAYER.health..'\n--¹¥»÷Á¦: '..PLAYER.attack..'\n--ÉËº¦¼õÃâ: '..PLAYER.defence..'\n--¼¼ÄÜ: '..PLAYER.skill..'\n--µÈ¼¶: '..PLAYER.level)
     end,
     monsterAppear = function()
         local monsterNum = #Monster.Species - 1

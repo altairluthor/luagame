@@ -122,7 +122,7 @@ function module.Player:levelUp()
 	self.defence = self.defence * 1.08
 	self.experience = 0
 	self.health = self.maxHealth
-	print('--'..self.name..'等级提升，(σ￣▽￣)σ--')
+	print('--'..self.name..'等级提升，(σ￣▽￣)σ, 目前等级'..self.level..'--')
 	return self.skill
 end
 
