@@ -9,8 +9,8 @@ module.Profession = {
 	caster = {
 		defaultValue = {
 			health = 100,
-			attack = 25,
-			defence = 5
+			attack = 28,
+			defence = 8
 		},
 		skill = 'boom'
 	},
@@ -18,14 +18,14 @@ module.Profession = {
 		defaultValue = {
 			health = 120,
 			attack = 15,
-			defence = 10
+			defence = 15
 		},
 		skill = 'boom'
 	},
 	berserker = {
 		defaultValue = {
 			health = 250,
-			attack = 30,
+			attack = 32,
 			defence = 0
 		},
 		skill = 'boom'
@@ -34,7 +34,7 @@ module.Profession = {
 		defaultValue = {
 			health = 140,
 			attack = 22,
-			defence = 7
+			defence = 12
 		},
 		skill = 'boom'
 	},
@@ -42,7 +42,7 @@ module.Profession = {
 		defaultValue = {
 			health = 120,
 			attack = 8,
-			defence = 20
+			defence = 30
 		},
 		skill = 'boom'
 	}
@@ -80,7 +80,7 @@ function module.Player:beAttack(atk, behavior)
 	local damage = 0
 	local result = false
 	if (behavior == 2) then
-		damage = Formula.calDamage(atk, self.defence * 2)
+		damage = Formula.calDamage(atk, self.defence * 2.2 + 20)
 		result = 'defense'
 	elseif (behavior == 3) and (Formula.probabilityRandom(10)) then
 		damage = 0
@@ -109,18 +109,18 @@ function module.Player:getExperience(exp)
 	print('--获得经验'..exp..'--')
 	self.experience = self.experience + exp
 	local experienceToLevelup = Formula.experienceToLevelup(self.level - 1, self.experience)
-	if experienceToLevelup < 0 then
-		self:levelUp()
+	if experienceToLevelup <= 0 then
+		self:levelUp(-experienceToLevelup)
 	else
 		print('--升级还剩经验'..experienceToLevelup..'--')
 	end
 end
 
-function module.Player:levelUp()
+function module.Player:levelUp(exp)
 	self.level = self.level + 1
 	self.attack = self.attack * 1.08
 	self.defence = self.defence * 1.08
-	self.experience = 0
+	self.experience = exp
 	self.health = self.maxHealth
 	print('--'..self.name..'等级提升，(σ￣▽￣)σ, 目前等级'..self.level..'--')
 	return self.skill

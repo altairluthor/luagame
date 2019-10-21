@@ -79,7 +79,8 @@ local Control
 Control = {
     gameStart = function()
         print('欢迎进入游戏，本游戏还处于开发状态，如有BUG，请爱惜您的电脑（商业性的微笑）')
-        print('换句话说，凭本事写的BUG，为什么要修 ￣へ￣（误）\n')
+        print('换句话说，凭本事写的BUG，为什么要修 ￣へ￣（误）')
+        print('如需反馈，欢迎联系shbdhxhs@163.com\n')
         Control.selectProfession()
         while true do
             local monster = Control.monsterAppear()
