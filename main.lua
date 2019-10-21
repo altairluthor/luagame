@@ -24,10 +24,13 @@ Battle = {
             behavior = io.read('*n')
             if not behavior then
                 io.read()
+            end
+            if behavior ~= 2 and behavior ~= 3 then
                 behavior = 1
             end
+
             -- 采用攻击行动，玩家先手
-            if behavior ~= 2 and behavior ~= 3 then
+            if behavior == 1 then
                 print(player.name..': 欧拉欧拉!!!')
                 experience = monster:beAttack(player.attack)
                 if experience then
@@ -38,27 +41,22 @@ Battle = {
             -- 防御或回避玩家后手，或攻击完成怪物开始行动
             print(monster.species..' '..monster.name..': wyyyyyy!!!')
             playerResult = player:beAttack(monster.attack, behavior)
+            -- 玩家后结果反馈&反击行动
             if playerResult == 'death' then
                 result = 'player'
                 break
             elseif playerResult == 'defense' then
                 print('雪花之壁!!!')
                 experience = monster:beAttack(player.attack * 0.6)
-                if experience then
-                    result = 'monster'
-                    break
-                end
             elseif playerResult == 'dodge' then
                 print('避矢之加护!!!')
                 experience = monster:beAttack(player.attack)
-                if experience then
-                    result = 'monster'
-                    break
-                end
-            else
-                if behavior == 3 then
-                    print('膝盖中了一箭。。。')
-                end
+            elseif playerResult == 'miss' then
+                print('膝盖中了一箭。。。')
+            else end
+            if experience then
+                result = 'monster'
+                break
             end
         end
         Battle.battleEnd(result, player, experience)
